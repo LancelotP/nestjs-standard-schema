@@ -1,5 +1,9 @@
 {
   "name": "nestjs-standard-schema",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lancelotp/nestjs-standard-schema"
+  },
   "version": "0.1.0",
   "description": "NestJS DTO validation based on standard schema",
   "main": "dist/index.js",
