@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "include-component-in-tag": false,
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "initial-version": "0.0.1",
+  "prerelease": false,
+  "packages": {
+    ".": {
+      "package-name": "nestjs-standard-schema"
+    }
+  }
+}
