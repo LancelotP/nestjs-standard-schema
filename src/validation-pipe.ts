@@ -48,11 +48,10 @@ export class StandardSchemaValidationPipe implements PipeTransform {
     const result = await schema["~standard"].validate(value);
 
     if (result.issues) {
-      const exception =
+      throw (
         this.options.exceptionFactory?.(result.issues) ??
-        this.createException(result.issues);
-
-      throw exception;
+        this.createException(result.issues)
+      );
     }
 
     return result.value;
