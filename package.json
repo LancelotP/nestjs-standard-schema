@@ -16,7 +16,7 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "prepare": "rimraf dist && pnpm build",
-    "test": "jest"
+    "test": "vitest"
   },
   "keywords": [
     "nestjs",
@@ -31,7 +31,8 @@
   "author": "Lancelot Prigent <lancelot@prigent.dev> (https://github.com/lancelotp)",
   "license": "MIT",
   "dependencies": {
-    "@standard-schema/spec": "^1.0.0"
+    "@standard-schema/spec": "^1.0.0",
+    "nestjs-standard-schema": "link:"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
@@ -39,15 +40,16 @@
     "@nestjs/core": "^11.0.7",
     "@nestjs/platform-express": "^11.0.7",
     "@nestjs/testing": "^11.0.7",
-    "@types/jest": "^29.5.14",
     "@types/supertest": "^6.0.2",
+    "@vitest/coverage-v8": "3.0.5",
+    "arktype": "^2.0.4",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
-    "jest": "^29.7.0",
     "rimraf": "^6.0.1",
     "supertest": "^7.0.0",
-    "ts-jest": "^29.2.5",
     "typescript": "^5.7.3",
+    "valibot": "1.0.0-beta.15",
+    "vitest": "^3.0.5",
     "zod": "^3.24.1"
   },
   "peerDependencies": {
@@ -57,6 +59,9 @@
     "onlyBuiltDependencies": [
       "@biomejs/biome",
       "@nestjs/core"
-    ]
+    ],
+    "overrides": {
+      "nestjs-standard-schema": "link:"
+    }
   }
 }
