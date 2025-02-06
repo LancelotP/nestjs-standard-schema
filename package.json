@@ -1,10 +1,12 @@
 {
   "name": "nestjs-standard-schema",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "NestJS DTO validation based on standard schema",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "lint": "biome check .",
@@ -45,6 +47,9 @@
     "@nestjs/common": "^11.0.7"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["@biomejs/biome", "@nestjs/core"]
+    "onlyBuiltDependencies": [
+      "@biomejs/biome",
+      "@nestjs/core"
+    ]
   }
 }
