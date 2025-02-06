@@ -10,7 +10,26 @@ import {
   isStandardSchemaDTO,
 } from "./create-standard-schema-dto";
 
+/**
+ * Configuration options for StandardSchemaValidationPipe
+ */
 export interface StandardSchemaValidationPipeOptions {
+  /**
+   * Custom factory function to create an exception when validation fails.
+   * If not provided, a default BadRequestException will be thrown.
+   *
+   * @param issues - List of validation issues detected
+   * @returns A custom exception or any other error response
+   *
+   * @example
+   * ```typescript
+   * new StandardSchemaValidationPipe({
+   *   exceptionFactory: (issues) => {
+   *     return new CustomValidationException(issues);
+   *   }
+   * });
+   * ```
+   */
   exceptionFactory?: (issues: readonly StandardSchemaV1.Issue[]) => unknown;
 }
 
