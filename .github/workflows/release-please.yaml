@@ -29,6 +29,9 @@ jobs:
       - name: Setup and install
         uses: ./.github/actions/setup-and-install
 
+      - name: Run tests
+        run: pnpm test
+        
       - name: Build package
         run: pnpm build
 
