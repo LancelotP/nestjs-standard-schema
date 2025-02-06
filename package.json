@@ -4,9 +4,7 @@
   "description": "NestJS DTO validation based on standard schema",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "lint": "biome check .",
@@ -14,16 +12,7 @@
     "prepare": "rimraf dist && pnpm build",
     "test": "jest"
   },
-  "keywords": [
-    "nestjs",
-    "dto",
-    "validation",
-    "standard",
-    "schema",
-    "zod",
-    "valibot",
-    "arktype"
-  ],
+  "keywords": ["nestjs", "dto", "validation", "standard", "schema", "zod", "valibot", "arktype"],
   "author": "Lancelot Prigent <lancelot@prigent.dev> (https://github.com/lancelotp)",
   "license": "MIT",
   "devDependencies": {
@@ -47,8 +36,6 @@
     "@nestjs/common": "^11.0.7"
   },
   "pnpm": {
-    "onlyBuiltDependencies": [
-      "@nestjs/core"
-    ]
+    "onlyBuiltDependencies": ["@nestjs/core"]
   }
 }
