@@ -12,6 +12,9 @@
     "indentWidth": 2,
     "lineWidth": 80
   },
+  "files": {
+    "ignore": ["package.json", "pnpm-lock.yaml"]
+  },
   "organizeImports": {
     "enabled": true
   },
