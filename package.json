@@ -1,0 +1,22 @@
+{
+  "name": "nestjs-standard-schema",
+  "version": "0.0.1",
+  "description": "NestJS DTO validation based on standard schema",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nestjs",
+    "dto",
+    "validation",
+    "standard",
+    "schema",
+    "zod",
+    "valibot",
+    "arktype"
+  ],
+  "author": "Lancelot Prigent <lancelot@prigent.dev> (https://github.com/lancelotp)",
+  "license": "MIT"
+}
