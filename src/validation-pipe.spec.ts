@@ -5,13 +5,19 @@ import * as valibot from "valibot";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
 import { createStandardSchemaDTO } from "./create-standard-schema-dto";
-import { StandardSchemaValidationPipe } from "./validation-pipe";
+import {
+  StandardSchemaValidationPipe,
+  StandardSchemaValidationPipeOptions,
+} from "./validation-pipe";
 
 const zodSchema = z.object({
   username: z.string().min(3).max(20),
   email: z.string().email(),
   password: z.string().min(8),
   age: z.number().min(18),
+  address: z.object({
+    country: z.string(),
+  }),
 });
 
 const valibotSchema = valibot.object({
@@ -24,6 +30,9 @@ const valibotSchema = valibot.object({
   email: valibot.pipe(valibot.string(), valibot.email()),
   password: valibot.pipe(valibot.string(), valibot.minLength(8)),
   age: valibot.pipe(valibot.number(), valibot.minValue(18)),
+  address: valibot.object({
+    country: valibot.string(),
+  }),
 });
 
 const arktypeSchema = type({
@@ -31,6 +40,9 @@ const arktypeSchema = type({
   email: "string.email",
   password: "string >= 8",
   age: "number >= 18",
+  address: {
+    country: "string",
+  },
 });
 
 const schemas: { vendor: string; schema: StandardSchemaV1 }[] = [
@@ -81,6 +93,9 @@ describe("ValidationPipe", () => {
           email: "john@example.com",
           password: "password",
           age: 20,
+          address: {
+            country: "Internet",
+          },
         };
 
         const expected = {
@@ -88,6 +103,9 @@ describe("ValidationPipe", () => {
           email: "john@example.com",
           password: "password",
           age: 20,
+          address: {
+            country: "Internet",
+          },
         };
 
         await expect(
@@ -133,4 +151,41 @@ describe("ValidationPipe", () => {
       });
     });
   }
+
+  describe("options", () => {
+    describe("exceptionFactory", () => {
+      test("should use the exception factory if provided", async () => {
+        class CustomException extends Error {}
+
+        await expect(
+          run(
+            z.object({ username: z.string() }),
+            {},
+            {
+              exceptionFactory: () => new CustomException(),
+            },
+          ),
+        ).rejects.toThrow(CustomException);
+      });
+
+      test("should throw a BadRequestException if no exception factory is provided", async () => {
+        await expect(
+          run(z.object({ username: z.string() }), {}),
+        ).rejects.toThrowError(BadRequestException);
+      });
+    });
+  });
 });
+
+async function run(
+  schema: StandardSchemaV1<unknown, object>,
+  input: unknown,
+  options?: StandardSchemaValidationPipeOptions,
+) {
+  const pipe = new StandardSchemaValidationPipe(options);
+
+  return pipe.transform(input, {
+    type: "body",
+    metatype: createStandardSchemaDTO(schema),
+  });
+}
