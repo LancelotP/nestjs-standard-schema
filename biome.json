@@ -70,7 +70,16 @@
     {
       "include": ["*.spec.ts", "*.e2e-spec.ts"],
       "javascript": {
-        "globals": ["it", "describe", "expect", "beforeEach", "afterEach", "beforeAll", "afterAll", "test"]
+        "globals": [
+          "it",
+          "describe",
+          "expect",
+          "beforeEach",
+          "afterEach",
+          "beforeAll",
+          "afterAll",
+          "test"
+        ]
       }
     }
   ]
