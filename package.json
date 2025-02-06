@@ -10,9 +10,18 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "prepare": "rimraf dist && pnpm build",
-    "test": "jest --passWithNoTests"
+    "test": "jest"
   },
-  "keywords": ["nestjs", "dto", "validation", "standard", "schema", "zod", "valibot", "arktype"],
+  "keywords": [
+    "nestjs",
+    "dto",
+    "validation",
+    "standard",
+    "schema",
+    "zod",
+    "valibot",
+    "arktype"
+  ],
   "author": "Lancelot Prigent <lancelot@prigent.dev> (https://github.com/lancelotp)",
   "license": "MIT",
   "devDependencies": {
