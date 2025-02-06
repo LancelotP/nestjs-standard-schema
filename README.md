@@ -8,6 +8,7 @@ A flexible validation pipe for NestJS that leverages [@standard-schema](https://
 - 🎯 Support for multiple validation libraries (Zod, Valibot, ArkType, etc.)
 - 🚀 Easy integration with existing NestJS applications
 - 📦 Lightweight with minimal dependencies
+- 🛠️ Customizable validation error handling
 
 ## Installation
 
@@ -48,7 +49,6 @@ export const CreateUserDTO = createStandardSchemaDTO(createUserSchema);
 2. Use the `CreateUserDTO` in your NestJS application:
 
 ```typescript
-
 import { Controller, Post, Body } from '@nestjs/common';
 import { StandardSchemaValidationPipe } from 'nestjs-standard-schema';
 
@@ -77,8 +77,45 @@ async function bootstrap() {
 bootstrap();
 ```
 
+## Configuration Options
+
+### Custom Error Handling
+
+You can customize validation error responses by providing an `exceptionFactory` option to the `StandardSchemaValidationPipe`:
+
+```typescript
+app.useGlobalPipes(
+  new StandardSchemaValidationPipe({
+    exceptionFactory: (issues) => {
+      return new BadRequestException({
+        statusCode: 400,
+        errors: issues.map(issue => ({
+          field: issue.path?.join('.'),
+          message: issue.message
+        }))
+      });
+    }
+  })
+);
+```
+
+By default, the pipe throws a `BadRequestException` with the following format:
+
+```typescript
+{
+  "statusCode": 400,
+  "message": [
+    {
+      "message": "Invalid email format",
+      "path": "email"
+    }
+  ]
+}
+```
+
 ## Roadmap
 
+- [x] Custom error handling with exceptionFactory
 - [ ] Support for all ValidationPipe options from @nestjs/common
 - [ ] Custom error messages
 - [ ] Transform options
