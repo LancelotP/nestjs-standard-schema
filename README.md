@@ -37,15 +37,15 @@ pnpm add nestjs-standard-schema
 import { z } from 'zod';
 import { createStandardSchemaDTO } from 'nestjs-standard-schema';
 
-const userSchema = z.object({
+const createUserSchema = z.object({
   name: z.string(),
   age: z.number(),
 });
 
-export const UserSchema = createStandardSchemaDTO(userSchema);
+export const CreateUserDTO = createStandardSchemaDTO(createUserSchema);
 ```
 
-2. Use the `UserSchema` in your NestJS application:
+2. Use the `CreateUserDTO` in your NestJS application:
 
 ```typescript
 
@@ -55,7 +55,7 @@ import { StandardSchemaValidationPipe } from 'nestjs-standard-schema';
 @Controller('users')
 export class UsersController {
   @Post()
-  createUser(@Body(new StandardSchemaValidationPipe()) user: UserDTO) {
+  createUser(@Body(new StandardSchemaValidationPipe()) user: CreateUserDTO) {
     return user;
   }
 }
@@ -71,6 +71,7 @@ import { StandardSchemaValidationPipe } from 'nestjs-standard-schema';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new StandardSchemaValidationPipe());
+
   await app.listen(3000);
 }
 bootstrap();
