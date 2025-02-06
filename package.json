@@ -2,24 +2,40 @@
   "name": "nestjs-standard-schema",
   "version": "0.0.1",
   "description": "NestJS DTO validation based on standard schema",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "prepare": "rimraf dist && pnpm build",
+    "test": "jest --passWithNoTests"
   },
-  "keywords": [
-    "nestjs",
-    "dto",
-    "validation",
-    "standard",
-    "schema",
-    "zod",
-    "valibot",
-    "arktype"
-  ],
+  "keywords": ["nestjs", "dto", "validation", "standard", "schema", "zod", "valibot", "arktype"],
   "author": "Lancelot Prigent <lancelot@prigent.dev> (https://github.com/lancelotp)",
   "license": "MIT",
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4"
+    "@biomejs/biome": "^1.9.4",
+    "@nestjs/common": "^11.0.7",
+    "@nestjs/platform-express": "^11.0.7",
+    "@nestjs/testing": "^11.0.7",
+    "@standard-schema/spec": "^1.0.0",
+    "@types/jest": "^29.5.14",
+    "@types/supertest": "^6.0.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "jest": "^29.7.0",
+    "rimraf": "^6.0.1",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.7.3",
+    "zod": "^3.24.1"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^11.0.7"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["@biomejs/biome", "@nestjs/core"]
   }
 }
