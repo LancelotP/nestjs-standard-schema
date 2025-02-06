@@ -4,7 +4,7 @@
     "type": "git",
     "url": "https://github.com/lancelotp/nestjs-standard-schema"
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "NestJS DTO validation based on standard schema",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -30,7 +30,7 @@
   ],
   "author": "Lancelot Prigent <lancelot@prigent.dev> (https://github.com/lancelotp)",
   "license": "MIT",
-  "dependencies": { 
+  "dependencies": {
     "@standard-schema/spec": "^1.0.0"
   },
   "devDependencies": {

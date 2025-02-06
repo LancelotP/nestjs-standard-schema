@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/LancelotP/nestjs-standard-schema/compare/v0.1.0...v0.1.1) (2025-02-06)
+
+
+### Bug Fixes
+
+* add @standard-schema/spec as dependency to properly reflect types ([#10](https://github.com/LancelotP/nestjs-standard-schema/issues/10)) ([c91f40c](https://github.com/LancelotP/nestjs-standard-schema/commit/c91f40c3c24efeec06662505e772fb89d9f7cc21))
+
 ## 0.1.0 (2025-02-06)
 
 
