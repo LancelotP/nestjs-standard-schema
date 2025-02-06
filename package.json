@@ -18,5 +18,8 @@
     "arktype"
   ],
   "author": "Lancelot Prigent <lancelot@prigent.dev> (https://github.com/lancelotp)",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4"
+  }
 }
