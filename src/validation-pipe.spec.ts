@@ -1,19 +1,50 @@
-import { BadRequestException, Body, Controller, Post } from "@nestjs/common";
-import { IsNumber, IsString } from "class-validator";
+import { BadRequestException } from "@nestjs/common";
+import { StandardSchemaV1 } from "@standard-schema/spec";
+import { type } from "arktype";
+import * as valibot from "valibot";
+import { describe, expect, test } from "vitest";
 import { z } from "zod";
 import { createStandardSchemaDTO } from "./create-standard-schema-dto";
 import { StandardSchemaValidationPipe } from "./validation-pipe";
+
 const zodSchema = z.object({
-  name: z.string(),
-  age: z.number(),
+  username: z.string().min(3).max(20),
+  email: z.string().email(),
+  password: z.string().min(8),
+  age: z.number().min(18),
 });
 
+const valibotSchema = valibot.object({
+  username: valibot.pipe(
+    valibot.string(),
+    valibot.trim(),
+    valibot.minLength(3),
+    valibot.maxLength(20),
+  ),
+  email: valibot.pipe(valibot.string(), valibot.email()),
+  password: valibot.pipe(valibot.string(), valibot.minLength(8)),
+  age: valibot.pipe(valibot.number(), valibot.minValue(18)),
+});
+
+const arktypeSchema = type({
+  username: "3 <= string <= 20",
+  email: "string.email",
+  password: "string >= 8",
+  age: "number >= 18",
+});
+
+const schemas: { vendor: string; schema: StandardSchemaV1 }[] = [
+  { vendor: "zod", schema: zodSchema },
+  { vendor: "valibot", schema: valibotSchema },
+  { vendor: "arktype", schema: arktypeSchema },
+];
+
 describe("ValidationPipe", () => {
-  it("should be defined", () => {
+  test("should be defined", () => {
     expect(new StandardSchemaValidationPipe()).toBeDefined();
   });
 
-  it("should passthrough undefined metatype", async () => {
+  test("should passthrough undefined metatype", async () => {
     const pipe = new StandardSchemaValidationPipe();
 
     const input = { foo: "bar" };
@@ -21,7 +52,7 @@ describe("ValidationPipe", () => {
     await expect(pipe.transform(input, { type: "body" })).resolves.toBe(input);
   });
 
-  it("should passthrough unknown metatype", async () => {
+  test("should passthrough unknown metatype", async () => {
     const pipe = new StandardSchemaValidationPipe();
 
     const input = { foo: "bar" };
@@ -37,47 +68,69 @@ describe("ValidationPipe", () => {
     ).resolves.toBe(input);
   });
 
-  it("should validate and return a POJO", async () => {
-    const pipe = new StandardSchemaValidationPipe();
+  for (const { vendor, schema } of schemas) {
+    // @ts-expect-error - This is a valid use of createStandardSchemaDTO
+    class SampleDTO extends createStandardSchemaDTO(schema) {}
 
-    const input = { name: "John", age: 20 };
+    describe(`${vendor} schema`, () => {
+      test("should validate and return a POJO", async () => {
+        const pipe = new StandardSchemaValidationPipe();
 
-    await expect(
-      pipe.transform(input, { type: "body", metatype: ZodPostDTO }),
-    ).resolves.toEqual(input);
-  });
+        const input = {
+          username: "John",
+          email: "john@example.com",
+          password: "password",
+          age: 20,
+        };
 
-  it("should throw a BadRequestException when validation fails", async () => {
-    const pipe = new StandardSchemaValidationPipe();
+        const expected = {
+          username: "John",
+          email: "john@example.com",
+          password: "password",
+          age: 20,
+        };
 
-    const input = { name: "John", age: "20" };
+        await expect(
+          pipe.transform(input, { type: "body", metatype: SampleDTO }),
+        ).resolves.toEqual(expected);
+      });
 
-    await expect(
-      pipe.transform(input, { type: "body", metatype: ZodPostDTO }),
-    ).rejects.toThrow(
-      new BadRequestException([
-        {
-          message: "Invalid input",
-        },
-      ]),
-    );
-  });
-});
+      test("should throw a BadRequestException when validation fails", async () => {
+        const pipe = new StandardSchemaValidationPipe();
 
-class ZodPostDTO extends createStandardSchemaDTO(zodSchema) {}
+        const input = {
+          username: "12",
+          email: "johnexample.com",
+          password: "123123123123131312312313",
+          age: 17,
+        };
 
-class PostDTO {
-  @IsString()
-  name!: string;
+        let error: BadRequestException;
 
-  @IsNumber()
-  age!: number;
-}
+        try {
+          await pipe.transform(input, { type: "body", metatype: SampleDTO });
+        } catch (e) {
+          error = e as BadRequestException;
+        }
 
-@Controller("posts")
-class PostController {
-  @Post("zod")
-  async zod(@Body() postDTO: ZodPostDTO) {
-    return postDTO;
+        // @ts-expect-error -
+        expect(error.getResponse().message).toEqual(
+          expect.arrayContaining([
+            {
+              message: expect.any(String),
+              path: "username",
+            },
+            {
+              message: expect.any(String),
+              path: "email",
+            },
+            {
+              message: expect.any(String),
+              path: "age",
+            },
+          ]),
+        );
+      });
+    });
   }
-}
+});

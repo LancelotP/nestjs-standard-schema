@@ -11,8 +11,10 @@
   "[typescript]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
-  "jest.runMode": {
-    "type": "on-save",
-    "testFileOnly": false
-  }
+  // allow autocomplete for ArkType expressions like "string | num"
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  // prioritize ArkType's "type" for autoimports
+  "typescript.preferences.autoImportSpecifierExcludeRegexes": ["^(node:)?os$"]
 }
