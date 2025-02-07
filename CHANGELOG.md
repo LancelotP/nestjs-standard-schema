@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/LancelotP/nestjs-standard-schema/compare/v0.1.1...v0.1.2) (2025-02-06)
+
+
+### Features
+
+* add exceptionFactory option ([#15](https://github.com/LancelotP/nestjs-standard-schema/issues/15)) ([deff273](https://github.com/LancelotP/nestjs-standard-schema/commit/deff2737b384eadd1f2d43b085414fa5e8792ac3))
+
 ## [0.1.1](https://github.com/LancelotP/nestjs-standard-schema/compare/v0.1.0...v0.1.1) (2025-02-06)
 
 
